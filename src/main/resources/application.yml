@@ -1,0 +1,74 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: Exchange
+          uri: http://localhost:8081
+          predicates:
+            - Path=/exchanges/** 
+        - id: Owner
+          uri: http://localhost:8082
+          predicates:
+            - Path=/owners/** 
+        - id: Management
+          uri: http://localhost:8083
+          predicates:
+            - Path=/managements/** 
+        - id: ExchangeStatus
+          uri: http://localhost:8084
+          predicates:
+            - Path= /exchangeStatuses/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: Exchange
+          uri: http://Exchange:8080
+          predicates:
+            - Path=/exchanges/** 
+        - id: Owner
+          uri: http://Owner:8080
+          predicates:
+            - Path=/owners/** 
+        - id: Management
+          uri: http://Management:8080
+          predicates:
+            - Path=/managements/** 
+        - id: ExchangeStatus
+          uri: http://ExchangeStatus:8080
+          predicates:
+            - Path= /exchangeStatuses/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
